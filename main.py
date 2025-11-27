@@ -17,17 +17,28 @@ try:
 except Exception:
     xgb_model = None
 
+
 # Preprocessors
+import logging
+logging.basicConfig(level=logging.INFO)
 scaler = None
 ohe = None
 try:
-    scaler = joblib.load(os.path.join(MODEL_DIR, "standard_scaler.pkl"))
-except Exception:
+    scaler_path = os.path.join(MODEL_DIR, "standard_scaler.pkl")
+    logging.info(f"Trying to load scaler from: {scaler_path}")
+    scaler = joblib.load(scaler_path)
+    logging.info("Scaler loaded successfully.")
+except Exception as e:
+    logging.error(f"Failed to load scaler: {e}")
     scaler = None
 
 try:
-    ohe = joblib.load(os.path.join(MODEL_DIR, "one_hot_encoder.pkl"))
-except Exception:
+    ohe_path = os.path.join(MODEL_DIR, "one_hot_encoder.pkl")
+    logging.info(f"Trying to load one-hot encoder from: {ohe_path}")
+    ohe = joblib.load(ohe_path)
+    logging.info("One-hot encoder loaded successfully.")
+except Exception as e:
+    logging.error(f"Failed to load one-hot encoder: {e}")
     ohe = None
 
 # LSTM Autoencoder (PyTorch)
